@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { QueryProvider } from '@/common/providers';
-import '@mantine/core/styles.css';
 import '../common/styles/globals.css';
 
 import ClientLayout from './ClientLayout';
@@ -22,9 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryProvider>
-          <MantineProvider>
-            <ClientLayout>{children}</ClientLayout>
-          </MantineProvider>
+          <ClientLayout>{children}</ClientLayout>
         </QueryProvider>
       </body>
     </html>

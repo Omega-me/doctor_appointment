@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "^7.9.1",
-    "@mantine/hooks": "^7.9.1",
-    "@mantine/modals": "^7.9.1",
-    "@mantine/notifications": "^7.9.1",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.13",
+    "@mui/icons-material": "^5.15.17",
+    "@mui/material": "^5.15.17",
     "@prisma/client": "^5.14.0",
     "@tanstack/react-query": "^5.36.1",
     "@tanstack/react-query-devtools": "^5.36.1",
@@ -28,9 +29,6 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
-    "postcss": "^8.4.38",
-    "postcss-preset-mantine": "^1.15.0",
-    "postcss-simple-vars": "^7.0.1",
     "typescript": "^5"
   },
   "activate_nextjs_extension": true

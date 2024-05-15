@@ -1,8 +1,11 @@
 'use client';
 import React from 'react';
-import s from './page.module.scss';
 import { useRouter } from 'next/navigation';
-import { eApiRoutes } from '@/common/enums';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { eApiRoutes } from '@/common/enums';
+import s from './page.module.scss';
+
+const defaultTheme = createTheme({});
 
 const ClientLayout = ({
   children,
@@ -11,7 +14,11 @@ const ClientLayout = ({
 }>) => {
   const router = useRouter();
 
-  return <div>{children}</div>;
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <div> {children}</div>
+    </ThemeProvider>
+  );
 };
 
 export default ClientLayout;
