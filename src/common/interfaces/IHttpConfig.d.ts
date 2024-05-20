@@ -11,7 +11,6 @@ interface IAxiosConfig extends AxiosRequestConfig {
 export interface IHttpConfig<TData = unknown> {
   data?: TData;
   axiosConfig?: IAxiosConfig;
-  message?: string;
 }
 
 // http config interface for react query

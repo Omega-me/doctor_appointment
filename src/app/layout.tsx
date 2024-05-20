@@ -4,6 +4,7 @@ import { QueryProvider } from '@/common/providers';
 import '../common/styles/globals.css';
 
 import ClientLayout from './ClientLayout';
+import ReduxLayout from './ReduxLayout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <QueryProvider>
-          <ClientLayout>{children}</ClientLayout>
-        </QueryProvider>
+        <ReduxLayout>
+          <QueryProvider>
+            <ClientLayout>{children}</ClientLayout>
+          </QueryProvider>
+        </ReduxLayout>
       </body>
     </html>
   );

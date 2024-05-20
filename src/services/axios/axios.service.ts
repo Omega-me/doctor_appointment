@@ -20,13 +20,5 @@ export const httpClient = async <TData = any>(methode: eHttpMethod, url: string,
   } else if (methode === eHttpMethod.GET || methode === eHttpMethod.DELETE) {
     response = await httpConnector[methode](url, config?.axiosConfig);
   }
-  //   if (config?.message) {
-  //     if (checkSuccess(response)) {
-  //       toast(config?.message, {
-  //         ...toastOptions,
-  //         type: 'success',
-  //       });
-  //     }
-  //   }
   return response?.data;
 };

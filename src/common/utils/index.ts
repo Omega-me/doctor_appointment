@@ -1,7 +1,12 @@
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { MutationKey, QueryKey } from '@tanstack/react-query';
 import { IMutationOpts, IQueryOpts } from '../interfaces';
 import { AxiosRequestConfig } from 'axios';
-import { eHttpMethod } from '../enums';
+import { eHttpMethod, eRoutes, eStatusCode } from '../enums';
+import { NextResponse } from 'next/server';
+import { DecodedTokenDTO, UserDTO } from '../dto';
+import { user_role } from '@prisma/client';
 
 /**
  *
@@ -84,4 +89,79 @@ export const generatUrlAndKeys = <TData>(opts: {
     hasInvalidation,
     hasErrorHandling,
   };
+};
+
+export const passwordHash = {
+  hashIt: async function (password: string) {
+    const salt = await bcrypt.genSalt(8);
+    const hashed = await bcrypt.hash(password, salt);
+    return hashed;
+  },
+  compareIt: function (candidatePassword: string, password: string) {
+    const validPassword = bcrypt.compareSync(candidatePassword, password);
+    return validPassword;
+  },
+};
+
+/**
+ *
+ * @param error
+ * @param status
+ * @returns
+ */
+export const sendError = (error: string, status: eStatusCode) => {
+  return NextResponse.json(
+    {
+      message: error,
+      status,
+    },
+    {
+      status,
+    },
+  );
+};
+
+/**
+ *
+ * @param user
+ * @returns
+ */
+export const signJWTToken = (user: UserDTO) => {
+  const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, (process.env as any).JWT_SECRET_KEY, {
+    expiresIn: (process.env as any).JWT_EXPIRES_IN,
+  });
+
+  return token;
+};
+
+/**
+ *
+ * @param token
+ */
+export const decodeJwt = async (token: string) => {
+  const tokenObj: { decoded?: DecodedTokenDTO; error?: string } = {};
+  jwt.verify(token, (process.env as any).JWT_SECRET_KEY, function (err: any, decoded: any) {
+    if (!err) {
+      tokenObj.decoded = decoded;
+      tokenObj.error = undefined;
+    } else {
+      const message = err?.response?.data?.message || err.message || err.toString();
+      tokenObj.error = message;
+      tokenObj.decoded = undefined;
+    }
+  });
+  return tokenObj;
+};
+
+/**
+ *
+ * @param restrictedroles
+ * @param userRole
+ * @returns
+ */
+export const restrictTo = (restrictedroles: user_role[], userRole: user_role) => {
+  if (!restrictedroles.includes(userRole)) {
+    return true;
+  }
+  return false;
 };
