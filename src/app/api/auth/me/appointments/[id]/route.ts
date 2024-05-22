@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return sendError('You are not allowed', eStatusCode.FORBIDDEN);
   }
 
-  let appointments: AppointmentDTO | null = null;
+  let appointments: any = null;
   const include = {
     customer_info: {
       include: {

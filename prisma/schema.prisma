@@ -10,10 +10,12 @@ datasource db {
 model appointment {
   id              Int           @id @default(autoincrement())
   date            DateTime      @db.Date
+  info            String        @db.Text
+  request         Boolean
   customerinfo_id Int
-  doctorinfo_id   Int
+  doctorinfo_id   Int?
   customer_info   customer_info @relation(fields: [customerinfo_id], references: [id], onUpdate: Restrict, map: "appointment_customerinfo_id")
-  doctor_info     doctor_info   @relation(fields: [doctorinfo_id], references: [id], onUpdate: Restrict, map: "appointment_doctorinfo_id")
+  doctor_info     doctor_info?  @relation(fields: [doctorinfo_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "appointment_doctorinfo_id")
 
   @@index([customerinfo_id], map: "appointment_customerinfo_id")
   @@index([doctorinfo_id], map: "appointment_doctorinfo_id")
@@ -52,7 +54,7 @@ model doctor_info {
 model user {
   id            Int             @id @default(autoincrement())
   email         String          @db.VarChar(25)
-  password      String          @db.VarChar(15)
+  password      String          @db.VarChar(100)
   role          user_role       @default(Patient)
   customer_info customer_info[]
   doctor_info   doctor_info[]

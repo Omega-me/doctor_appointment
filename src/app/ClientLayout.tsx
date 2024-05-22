@@ -8,7 +8,6 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Badge,
   Divider,
   List,
   Container,
@@ -27,6 +26,7 @@ import { useRouter } from 'next/navigation';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { user_role } from '@prisma/client';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -66,6 +66,12 @@ const ClientLayout = ({
   useEffect(() => {
     if (!data) {
       router.push(eRoutes.LOGIN);
+    } else {
+      if (data.user.role !== user_role.Admin) {
+        router.push(eRoutes.PROFILE);
+      } else {
+        router.push(eRoutes.HOME);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -105,6 +111,7 @@ const ClientLayout = ({
           </Box>
         );
       }
+
       return (
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />

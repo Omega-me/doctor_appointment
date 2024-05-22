@@ -1,8 +1,7 @@
 'use client';
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit';
 import { AuthReducer } from '../reducers/auth.reducer';
-import { IStateThunk, UserStateType } from '@/common/interfaces';
-import { CustomerUserStateDTO, DoctorUserStateDTO, UserStateDTO } from '@/common/dto';
+import { IStateThunk } from '@/common/interfaces';
 
 const initialState: IStateThunk = {
   data: typeof window !== 'undefined' && localStorage.getItem('user') !== null ? JSON.parse(localStorage.getItem('user') as string) : null,

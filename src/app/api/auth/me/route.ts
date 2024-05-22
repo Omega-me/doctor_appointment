@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (decodedToken.decoded?.role === user_role.Patient) {
-    const customerInfo: CustomerInfoDTO | null = await prisma.customer_info.findFirst({
+    const customerInfo = await prisma.customer_info.findFirst({
       where: {
         user_id: decodedToken.decoded.id,
       },
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (decodedToken.decoded?.role === user_role.Doctor) {
-    const doctorInfo: DoctorInfoDTO | null = await prisma.doctor_info.findFirst({
+    const doctorInfo = await prisma.doctor_info.findFirst({
       where: {
         user_id: decodedToken.decoded.id,
       },

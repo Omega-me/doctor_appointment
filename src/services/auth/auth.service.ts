@@ -57,13 +57,21 @@ export const setUserDataService = async <TData = any>(token: string, remember: b
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(res.data));
       }
-      return res.data;
+      const userData = {
+        ...res.data,
+        user: {
+          ...(res.data as any).user,
+          token,
+        },
+      };
+      return userData;
     } else {
       const userData = {
         user: {
           email: decoded.email,
           role: decoded.role,
           noProfile: true,
+          token,
         },
       };
       if (remember) {
@@ -77,6 +85,7 @@ export const setUserDataService = async <TData = any>(token: string, remember: b
     user: {
       email: decoded.email,
       role: user_role.Admin,
+      token,
     },
   };
   if (remember) {

@@ -9,37 +9,50 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import { useRouter, usePathname } from 'next/navigation';
 import { eRoutes } from '@/common/enums';
+import useAuth from '@/hooks/useAuth';
+import { UserStateDTO } from '@/common/dto';
+import { user_role } from '@prisma/client';
 
 const ListMenuItems = () => {
+  const { data } = useAuth<UserStateDTO>();
+  const { role } = data.user;
   const router = useRouter();
   const pathname = usePathname();
 
   return (
     <React.Fragment>
-      <ListItemButton selected={pathname === eRoutes.HOME} onClick={() => router.push(eRoutes.HOME)}>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItemButton>
-      <ListItemButton selected={pathname === eRoutes.PROFILE} onClick={() => router.push(eRoutes.PROFILE)}>
-        <ListItemIcon>
-          <ShoppingCartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Profile" />
-      </ListItemButton>
-      <ListItemButton selected={pathname === eRoutes.PATIENTS} onClick={() => router.push(eRoutes.PATIENTS)}>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Patients" />
-      </ListItemButton>
-      <ListItemButton selected={pathname === eRoutes.DOCTORS} onClick={() => router.push(eRoutes.DOCTORS)}>
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Doctors" />
-      </ListItemButton>
+      {role === user_role.Admin && (
+        <ListItemButton selected={pathname === eRoutes.HOME} onClick={() => router.push(eRoutes.HOME)}>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItemButton>
+      )}
+      {role !== user_role.Admin && (
+        <ListItemButton selected={pathname === eRoutes.PROFILE} onClick={() => router.push(eRoutes.PROFILE)}>
+          <ListItemIcon>
+            <ShoppingCartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </ListItemButton>
+      )}
+      {role === user_role.Admin && (
+        <ListItemButton selected={pathname === eRoutes.PATIENTS} onClick={() => router.push(eRoutes.PATIENTS)}>
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Patients" />
+        </ListItemButton>
+      )}
+      {role !== user_role.Doctor && (
+        <ListItemButton selected={pathname === eRoutes.DOCTORS} onClick={() => router.push(eRoutes.DOCTORS)}>
+          <ListItemIcon>
+            <BarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Doctors" />
+        </ListItemButton>
+      )}
       <ListItemButton selected={pathname === eRoutes.APPOINTMENTS} onClick={() => router.push(eRoutes.APPOINTMENTS)}>
         <ListItemIcon>
           <LayersIcon />

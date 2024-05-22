@@ -17,6 +17,7 @@ export const signup = createAsyncThunk('auth/signup', async (signupDto: CreateUs
           email: signupDto.email,
           role: user_role.Patient,
           noProfile: true,
+          token: response?.data?.token,
         },
       };
     }
@@ -40,6 +41,7 @@ export const login = createAsyncThunk('auth/login', async (loginDto: LoginUserDT
           email: loginDto.email,
           role: user_role.Patient,
           noProfile: true,
+          token: response?.data?.token,
         },
       };
     }

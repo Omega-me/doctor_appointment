@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   if (restrictTo([user_role.Admin], decodedToken.decoded?.role as user_role)) {
     return sendError('You are not allowed', eStatusCode.FORBIDDEN);
   }
-  const doctors: DoctorInfoDTO[] = await prisma.doctor_info.findMany({
+  const doctors = await prisma.doctor_info.findMany({
     include: {
       user: {
         select: {

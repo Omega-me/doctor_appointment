@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     return sendError('You are not allowed', eStatusCode.FORBIDDEN);
   }
 
-  const customer: CustomerInfoDTO[] = await prisma.customer_info.findMany({
+  const customer = await prisma.customer_info.findMany({
     include: {
       user: {
         select: {
