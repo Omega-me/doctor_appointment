@@ -4,30 +4,14 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { UserStateDTO, DoctorInfoDTO } from '@/common/dto';
+import moment from 'moment';
+import { eRoutes } from '@/common/enums';
 
 interface DoctorsProps {
   user: UserStateDTO;
   doctors?: DoctorInfoDTO[];
+  onMoveDetail: (url: string) => void;
 }
-
-function createData(id: number, patientName: string, doctorName: string, date: string, patientInfo: string) {
-  return { id, patientName, doctorName, date, patientInfo };
-}
-
-const rows = [
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-];
 
 const Doctors: React.FC<DoctorsProps> = props => {
   return (
@@ -36,25 +20,31 @@ const Doctors: React.FC<DoctorsProps> = props => {
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
-            <TableCell align="right">Patient</TableCell>
-            <TableCell align="right">Doctor</TableCell>
-            <TableCell align="right">Date</TableCell>
-            <TableCell align="right">Patient informations</TableCell>
+            <TableCell align="right">Name</TableCell>
+            <TableCell align="right">Specialization</TableCell>
+            <TableCell align="right">Gender</TableCell>
+            <TableCell align="right">Phone</TableCell>
+            <TableCell align="center">Email</TableCell>
+            <TableCell align="center">Date of birth</TableCell>
             <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          {props?.doctors?.map(row => (
+            <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope="row">
-                {row.id}
+                {row?.id}
               </TableCell>
-              <TableCell align="right">{row.patientName}</TableCell>
-              <TableCell align="right">{row.doctorName}</TableCell>
-              <TableCell align="right">{row.date}</TableCell>
-              <TableCell align="right">{row.patientInfo}</TableCell>
+              <TableCell align="right">
+                {row?.first_name} {row?.last_name}
+              </TableCell>
+              <TableCell align="right">{row?.role}</TableCell>
+              <TableCell align="right">{row?.gender}</TableCell>
+              <TableCell align="right">{row?.phone}</TableCell>
+              <TableCell align="right">{(row?.user as any).email}</TableCell>
+              <TableCell align="right">{moment(row?.dob?.toString()).format('MMM Do YY')}</TableCell>
               <TableCell align="center">
-                <Button variant="text">
+                <Button onClick={() => props.onMoveDetail(`${eRoutes.DOCTORS}/${row?.id}`)} variant="text">
                   <VisibilityIcon />
                 </Button>
                 <Button color="error" variant="text">

@@ -22,7 +22,7 @@ export interface IQueryHttpConfig {
 
 // Axios response interface
 export interface IResponse<TData = unknown> {
-  data: TData | null;
+  data: TData | undefined;
   count?: number | null;
   status: string;
 }

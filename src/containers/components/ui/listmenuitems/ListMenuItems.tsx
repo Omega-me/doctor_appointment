@@ -5,13 +5,14 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import { useRouter, usePathname } from 'next/navigation';
 import { eRoutes } from '@/common/enums';
 import useAuth from '@/hooks/useAuth';
 import { UserStateDTO } from '@/common/dto';
 import { user_role } from '@prisma/client';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const ListMenuItems = () => {
   const { data } = useAuth<UserStateDTO>();
@@ -48,14 +49,14 @@ const ListMenuItems = () => {
       {role !== user_role.Doctor && (
         <ListItemButton selected={pathname === eRoutes.DOCTORS} onClick={() => router.push(eRoutes.DOCTORS)}>
           <ListItemIcon>
-            <BarChartIcon />
+            <LocalHospitalIcon />
           </ListItemIcon>
           <ListItemText primary="Doctors" />
         </ListItemButton>
       )}
       <ListItemButton selected={pathname === eRoutes.APPOINTMENTS} onClick={() => router.push(eRoutes.APPOINTMENTS)}>
         <ListItemIcon>
-          <LayersIcon />
+          <CalendarMonthIcon />
         </ListItemIcon>
         <ListItemText primary="Appointments" />
       </ListItemButton>

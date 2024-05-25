@@ -1,34 +1,25 @@
 'use client';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Button, Card, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { PatientsAndDoctors } from '..';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AppointmentDTO, DoctorInfoDTO, CustomerInfoDTO, UserStateDTO } from '@/common/dto';
+import { eRoutes } from '@/common/enums';
 
 interface HomeProps {
   appontments?: AppointmentDTO[];
   doctors?: DoctorInfoDTO[];
   patients?: CustomerInfoDTO[];
   user: UserStateDTO;
+  onMoveDetail: (url: string) => void;
 }
-
-function createData(id: number, patientName: string, phone: string, patientInfo: string) {
-  return { id, patientName, phone, patientInfo };
-}
-
-const rows = [
-  createData(1, 'Olken merxira', '355696621145', 'Problems with knee'),
-  createData(1, 'Olken merxira', '355696621145', 'Problems with knee'),
-  createData(1, 'Olken merxira', '355696621145', 'Problems with knee'),
-  createData(1, 'Olken merxira', '355696621145', 'Problems with knee'),
-];
 
 const Home: React.FC<HomeProps> = props => {
   return (
     <Grid container spacing={3}>
-      <PatientsAndDoctors />
-      <PatientsAndDoctors isDoctor={true} />
+      <PatientsAndDoctors onMoveDetail={props.onMoveDetail} data={props?.patients} />
+      <PatientsAndDoctors onMoveDetail={props.onMoveDetail} isDoctor={true} data={props?.doctors} />
       <Grid item xs={12}>
         <Card sx={{ marginBottom: '20px', padding: '30px' }}>
           <Typography>Appointment requests</Typography>
@@ -45,16 +36,18 @@ const Home: React.FC<HomeProps> = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(row => (
-                <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              {props?.appontments?.map(row => (
+                <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
-                    {row.id}
+                    {row?.id}
                   </TableCell>
-                  <TableCell align="right">{row.patientName}</TableCell>
-                  <TableCell align="right">{row.phone}</TableCell>
-                  <TableCell align="right">{row.patientInfo}</TableCell>
+                  <TableCell align="right">
+                    {row?.customer_info?.first_name} {row?.customer_info?.last_name}
+                  </TableCell>
+                  <TableCell align="right">{row?.customer_info?.phone}</TableCell>
+                  <TableCell align="right">{row?.info}</TableCell>
                   <TableCell align="center">
-                    <Button variant="text">
+                    <Button onClick={() => props.onMoveDetail(`${eRoutes.APPOINTMENTS}/${row?.id}`)} variant="text">
                       <VisibilityIcon />
                     </Button>
                     <Button color="error" variant="text">

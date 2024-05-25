@@ -27,6 +27,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { user_role } from '@prisma/client';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -185,7 +187,9 @@ const ClientLayout = ({
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>{<>{renderLayoutContnent()}</>}</ThemeProvider>;
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>{<>{renderLayoutContnent()}</>}</ThemeProvider>;
+      </LocalizationProvider>
     </ColorModeContext.Provider>
   );
 };

@@ -16,7 +16,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   const decodedToken = await decodeJwt(token);
 
-  if (restrictTo([user_role.Admin], decodedToken.decoded?.role as user_role)) {
+  if (restrictTo([user_role.Admin, user_role.Patient], decodedToken.decoded?.role as user_role)) {
     return sendError('You are not allowed', eStatusCode.FORBIDDEN);
   }
 

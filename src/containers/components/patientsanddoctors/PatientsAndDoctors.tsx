@@ -1,22 +1,16 @@
 'use client';
 import { memo } from 'react';
 import { Button, Card, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { customer_info_gender } from '@prisma/client';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { DoctorInfoDTO, CustomerInfoDTO } from '@/common/dto';
+import moment from 'moment';
+import { eRoutes } from '@/common/enums';
 
 interface PatientsAndDoctorsProps {
   isDoctor?: boolean;
+  data?: DoctorInfoDTO[] | CustomerInfoDTO[];
+  onMoveDetail: (url: string) => void;
 }
-
-function createData(name: string, phone: string, dob: string, gender: customer_info_gender) {
-  return { name, phone, dob, gender };
-}
-
-const rows = [
-  createData('Jane Smith', '555-1235', '1985-06-15', 'Female'),
-  createData('Jane Smith', '555-1235', '1985-06-15', 'Female'),
-  createData('Jane Smith', '555-1235', '1985-06-15', 'Female'),
-];
 
 const PatientsAndDoctors: React.FC<PatientsAndDoctorsProps> = props => {
   return (
@@ -36,16 +30,16 @@ const PatientsAndDoctors: React.FC<PatientsAndDoctorsProps> = props => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {props?.data?.map(row => (
+              <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.first_name} {row.last_name}
                 </TableCell>
-                <TableCell align="right">{row.phone}</TableCell>
-                <TableCell align="right">{row.dob}</TableCell>
-                <TableCell align="right">{row.gender}</TableCell>
+                <TableCell align="right">{row?.phone}</TableCell>
+                <TableCell align="right">{moment(row?.dob.toString()).format('MMM Do YY')}</TableCell>
+                <TableCell align="right">{row?.gender}</TableCell>
                 <TableCell align="right">
-                  <Button variant="text">
+                  <Button onClick={() => props.onMoveDetail(`${props.isDoctor ? eRoutes.DOCTORS : eRoutes.PATIENTS}/${row?.id}`)} variant="text">
                     <ArrowForwardIcon />
                   </Button>
                 </TableCell>

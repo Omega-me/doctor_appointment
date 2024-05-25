@@ -1,6 +1,7 @@
 'use client';
 import { UserStateDTO, CustomerInfoDTO } from '@/common/dto';
 import { eApiRoutes, eHttpMethod } from '@/common/enums';
+import { IResponse } from '@/common/interfaces';
 import { PatientId } from '@/containers/components';
 import useAuth from '@/hooks/useAuth';
 import { httpClient } from '@/services';
@@ -12,10 +13,10 @@ interface PatientIdModuleProps {
 }
 
 const PatientIdModule: React.FC<PatientIdModuleProps> = props => {
-  const { data } = useAuth<UserStateDTO>();
+  const { data } = useAuth<any>();
   const { token } = data.user;
 
-  const { data: patient } = useQuery<CustomerInfoDTO>({
+  const { data: patient } = useQuery<IResponse<CustomerInfoDTO>>({
     queryKey: [`${eApiRoutes.PATIENTS}/${props.id}`],
     queryFn: () =>
       httpClient(eHttpMethod.GET, `${eApiRoutes.PATIENTS}/${props.id}`, {
@@ -27,7 +28,7 @@ const PatientIdModule: React.FC<PatientIdModuleProps> = props => {
       }),
     enabled: !!token && data.user.role === user_role.Admin && !!props.id,
   });
-  return <PatientId />;
+  return <PatientId user={data} data={patient?.data} />;
 };
 
 export default PatientIdModule;

@@ -14,12 +14,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return sendError('You are not authorised', eStatusCode.UNAUTHORIZED);
   }
 
-  const decodedToken = await decodeJwt(token);
-
-  if (restrictTo([user_role.Admin], decodedToken.decoded?.role as user_role)) {
-    return sendError('You are not allowed', eStatusCode.FORBIDDEN);
-  }
-
   const data = await prisma.appointment.findUnique({
     where: {
       id: Number(params.id),

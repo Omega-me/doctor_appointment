@@ -4,30 +4,17 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AppointmentDTO, UserStateDTO } from '@/common/dto';
+import moment from 'moment';
+import { eRoutes } from '@/common/enums';
+import { UserStateType } from '@/common/interfaces';
+import { user_role } from '@prisma/client';
 
 interface AppointmentsProps {
   appontments?: AppointmentDTO[];
-  user: UserStateDTO;
+  myAppointments?: AppointmentDTO[];
+  user: UserStateType;
+  onMoveDetail: (url: string) => void;
 }
-
-function createData(id: number, patientName: string, doctorName: string, date: string, patientInfo: string) {
-  return { id, patientName, doctorName, date, patientInfo };
-}
-
-const rows = [
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-  createData(1, 'Olken merxira', 'Dr.Olken Merxira', '06-21-2024', 'Problems with knee'),
-];
 
 const Appointments: React.FC<AppointmentsProps> = props => {
   return (
@@ -43,27 +30,59 @@ const Appointments: React.FC<AppointmentsProps> = props => {
             <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell align="right">{row.patientName}</TableCell>
-              <TableCell align="right">{row.doctorName}</TableCell>
-              <TableCell align="right">{row.date}</TableCell>
-              <TableCell align="right">{row.patientInfo}</TableCell>
-              <TableCell align="center">
-                <Button variant="text">
-                  <VisibilityIcon />
-                </Button>
-                <Button color="error" variant="text">
-                  <DeleteIcon color="error" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        {props.user?.user.role === user_role.Admin ? (
+          <TableBody>
+            {props?.appontments?.map(row => (
+              <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row">
+                  {row?.id}
+                </TableCell>
+                <TableCell align="right">
+                  {row?.customer_info?.first_name} {row?.customer_info?.last_name}
+                </TableCell>
+                <TableCell align="right">
+                  {row?.doctor_info?.first_name} {row?.doctor_info?.last_name}
+                </TableCell>
+                <TableCell align="right">{moment(row?.date?.toString()).format('MMM Do YY')}</TableCell>
+                <TableCell align="right">{row.info}</TableCell>
+                <TableCell align="center">
+                  <Button onClick={() => props.onMoveDetail(`${eRoutes.APPOINTMENTS}/${row?.id}`)} variant="text">
+                    <VisibilityIcon />
+                  </Button>
+                  <Button color="error" variant="text">
+                    <DeleteIcon color="error" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        ) : (
+          <TableBody>
+            {props?.myAppointments?.map(row => (
+              <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row">
+                  {row?.id}
+                </TableCell>
+                <TableCell align="right">
+                  {row?.customer_info?.first_name} {row?.customer_info?.last_name}
+                </TableCell>
+                <TableCell align="right">
+                  {row?.doctor_info?.first_name} {row?.doctor_info?.last_name}
+                </TableCell>
+                <TableCell align="right">{moment(row?.date?.toString()).format('MMM Do YY')}</TableCell>
+                <TableCell align="right">{row.info}</TableCell>
+                <TableCell align="center">
+                  <Button onClick={() => props.onMoveDetail(`${eRoutes.APPOINTMENTS}/${row?.id}`)} variant="text">
+                    <VisibilityIcon />
+                  </Button>
+                  <Button color="error" variant="text">
+                    <DeleteIcon color="error" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
       </Table>
     </TableContainer>
   );
