@@ -5,7 +5,6 @@ import { IResponse } from '@/common/interfaces';
 import { AppointmentId } from '@/containers/components';
 import useAuth from '@/hooks/useAuth';
 import { httpClient } from '@/services';
-import { user_role } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 
 interface AppointmentIdModuleProps {
@@ -26,7 +25,7 @@ const AppointmentIdModule: React.FC<AppointmentIdModuleProps> = props => {
           },
         },
       }),
-    enabled: !!token && data.user.role === user_role.Admin && !!props.id,
+    enabled: !!token && !!props.id,
   });
   return <AppointmentId data={appointment?.data} />;
 };
