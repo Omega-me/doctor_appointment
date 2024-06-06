@@ -1,5 +1,5 @@
 'use client';
-import { UserStateDTO, DoctorInfoDTO } from '@/common/dto';
+import { DoctorInfoDTO } from '@/common/dto';
 import { eApiRoutes, eHttpMethod } from '@/common/enums';
 import { IResponse } from '@/common/interfaces';
 import { DoctorId } from '@/containers/components';
@@ -27,7 +27,7 @@ const DoctorIdModule: React.FC<DoctorIdModuleProps> = props => {
           },
         },
       }),
-    enabled: !!token && data.user.role === user_role.Admin && !!props.id,
+    enabled: !!token && data.user.role !== user_role.Doctor && !!props.id,
   });
   return <DoctorId user={data} data={doctor?.data} />;
 };
