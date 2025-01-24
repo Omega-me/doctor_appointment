@@ -36,3 +36,9 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 https://itsourcecode.com/uml/dfd-for- doctor-appointment-system-data-flow-diagrams/
+
+## Test login accounts
+
+To login as Admin Email: admin@example.com & Password: 12345678
+To login as Doctor Email: dr.john.doe@example.com & Password: 12345678
+To login as Patient Email: jane.smith@example.com & Password: 12345678
